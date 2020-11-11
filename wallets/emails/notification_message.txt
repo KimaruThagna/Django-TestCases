@@ -1,0 +1,1 @@
+This is to notify you of a transaction performed on {{transaction_created}} of value {{transaction_value}}

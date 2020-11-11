@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.db.transaction import atomic
 from django.conf import settings
 from django.core.mail import send_mail
+from django.template.loader import render_to_string
 
 from transfer.models import Transaction
 
@@ -15,9 +16,12 @@ class WalletOwner(models.Model):
         return f'{self.given_name} {self.family_name}'
 
     def notify_about_transaction(self, transaction):
+        message = render_to_string('emails/notification_message.txt',context={'transaction_created':transaction.created,
+                                                                              'transaction_value':transaction.value})
+        subject = render_to_string('emails/notification_subject.txt')
         send_mail(
-            settings.NOTIFICATION_SUBJECT,
-            f'This is to notify you of a transaction performed on{transaction.created} of value {transaction.value}',
+            subject,
+            message,
             settings.DEFAULT_SENDER,
             [self.email],
             fail_silently=False,
@@ -43,16 +47,16 @@ class DigitalWallet(models.Model):
         source = self.get_locked()
         target = target.get_locked()
 
-        transaction_out = Transaction.objects.create(
+        credit = Transaction.objects.create(
             sender=source, recepient=target, value=amount * -1
         )
 
-        transaction_in = Transaction.objects.create(
+        debit = Transaction.objects.create(
             recepient=target, sender=source, value=amount
         )
-        return transaction_out, transaction_in
+        return credit, debit
 
-    def get_locked(self):
+    def get_locked(self): # lock db to perform transaction to prevent double transactions
         return DigitalWallet.objects.select_for_update().get(id=self.id)
 
 
