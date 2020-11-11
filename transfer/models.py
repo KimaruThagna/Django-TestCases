@@ -54,7 +54,6 @@ def transaction_created_update_balance(sender, instance, created, **kwargs):
     instance.sender.save(update_fields=["balance"])
 
 
-
 @receiver(post_save, sender=Transaction)
 def transaction_created(sender, instance, created, **kwargs):
     if created:
