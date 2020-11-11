@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'transfer',
     'wallets',
+    'admin_auto_filters',
 ]
 
 MIDDLEWARE = [
