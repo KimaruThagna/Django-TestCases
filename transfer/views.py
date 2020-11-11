@@ -16,6 +16,13 @@ class TransactionsListView(LoginRequiredMixin, ListView):
     paginate_by = 25
     model = Transaction
     ordering = '-created'
+    context_object_name = "transactions"
+
+    def get_queryset(self):
+        account_owner = WalletOwner.objects.all().first()
+        return Transaction.objects.filter(
+            sender__owner=account_owner
+        )
 
     def dispatch(self, request, *args, **kwargs):
         """
