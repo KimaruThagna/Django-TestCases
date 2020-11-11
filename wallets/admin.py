@@ -13,6 +13,8 @@ class DigitalWalletAdmin(admin.ModelAdmin):
     list_per_page = 25
     search_fields = ('iban','owner__email','owner__given_name','owner__family_name')
     list_filter = ('balance',WalletOwnerFilter)
+    list_select_related = ('owner',)
+
 
 
 @admin.register(WalletOwner)
