@@ -6,3 +6,16 @@ The use case is a fintech startup that trades digital currency between users of 
 1. Django Tests using factory boy
 2. Using Github issues, cross linking and PRs
 3. Django Signals
+
+# How to get this up and running
+
+Run ```docker-compose up -d``` to get it started.
+
+Once everything is built and running, you should migrate your database by running ```docker-compose run --rm django migrate```.
+Now you should be able to see the welcome page on <http://localhost:8000/>.
+
+To get into the Django shell, use ```docker-compose run --rm django shell```.
+Run ```docker-compose run --rm django test``` to execute the tests. 
+
+You can use the management command ```initialize_data``` to seed the database with some test data. Run ```docker-compose run --rm django initialize_data``` to execute it.
+
