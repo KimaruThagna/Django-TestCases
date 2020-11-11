@@ -5,6 +5,11 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.conf import settings
 
+from .exceptions import (
+    TransactionInsufficientFundsException,
+    TransactionImmutableException,
+)
+
 class Transaction(models.Model):
     sender = models.ForeignKey(
         DigitalWallet,
@@ -23,6 +28,31 @@ class Transaction(models.Model):
         max_digits=10, decimal_places=2, verbose_name=_("Value")
     )
     created = models.DateTimeField(auto_now_add=True, verbose_name=_("Created"))
+
+    def save(self, *args, **kwargs):
+        if self.pk: # if the pk already exists, then the save is an edit
+            raise TransactionImmutableException(
+                _("An existing transaction cannot be modified")
+            )
+        return super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        if self.pk:
+            raise TransactionImmutableException(
+                _("An existing transaction cannot be deleted")
+            )
+        super().delete(*args, **kwargs)
+
+@receiver(post_save, sender=Transaction)
+def transaction_created_update_balance(sender, instance, created, **kwargs):
+    # check available funds when transferring out
+    if instance.value < 0 and instance.sender.balance < instance.value * -1:
+        raise TransactionInsufficientFundsException(_("Insufficient funds"))
+
+    # update account balance
+    instance.sender.balance += instance.value
+    instance.sender.save(update_fields=["balance"])
+
 
 
 @receiver(post_save, sender=Transaction)
