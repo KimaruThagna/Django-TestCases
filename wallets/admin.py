@@ -15,6 +15,8 @@ class DigitalWalletAdmin(admin.ModelAdmin):
     list_filter = ('balance',WalletOwnerFilter)
     list_select_related = ('owner',)
 
+    # def queryset(self, request):
+    #     return super(DigitalWalletAdmin, self).get_queryset(request).prefetch_related('owner')
 
 
 @admin.register(WalletOwner)
