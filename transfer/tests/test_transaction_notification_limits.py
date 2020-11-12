@@ -19,7 +19,7 @@ class TransactionNotificationLimitsTestCase(TestCase):
         transaction_out, transaction_in = wallet_out.transfer(50, wallet_in)
 
         # the notification function must have been called with the right transaction
-        notify_mock.assert_called_once_with(transaction=transaction_out)
+        notify_mock.assert_called_once_with(transaction_out)
 
     @override_settings(TRANSACTION_NOTIFY_LIMIT_INBOUND=100)
     @override_settings(TRANSACTION_NOTIFY_LIMIT_OUTBOUND=-50)
@@ -35,8 +35,8 @@ class TransactionNotificationLimitsTestCase(TestCase):
         # order matters!
         notify_mock.assert_has_calls(
             [
-                mock.call(transaction=transaction_out),
-                mock.call(transaction=transaction_in),
+                mock.call(transaction_out),
+                mock.call(transaction_in),
             ]
         )
 
