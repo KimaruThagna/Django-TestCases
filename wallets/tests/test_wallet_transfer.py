@@ -7,10 +7,10 @@ from transfer.models import Transaction
 class WalletTransferTestCase(TestCase):
 
     def test_negative_amount(self):
-        bankaccount_out = DigitalWalletFactory(balance=5000)
+        bankaccount_out = DigitalWalletFactory(balance=10)
         bankaccount_in = DigitalWalletFactory(balance=0)
         with self.assertRaises(TransactionInsufficientFundsException):
-            transaction_out, transaction_in = bankaccount_out.transfer(-55, bankaccount_in)
+            transaction_out, transaction_in = bankaccount_out.transfer(55, bankaccount_in)
 
     def test_transfer_output(self):
         bankaccount_out = DigitalWalletFactory(balance=5000)

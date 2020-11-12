@@ -17,4 +17,4 @@ class DigitalWalletFactory(factory.django.DjangoModelFactory):
 
     owner = factory.SubFactory("wallets.factories.WalletOwnerFactory")
     iban = faker.Faker("iban")
-    balance = faker.Faker("pyint", min_value=0, max_value=100000)
+    balance = faker.Faker("pyint")

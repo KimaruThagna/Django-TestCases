@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from wallets.models import DigitalWallet
+
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.conf import settings
@@ -12,14 +12,14 @@ from .exceptions import (
 
 class Transaction(models.Model):
     sender = models.ForeignKey(
-        DigitalWallet,
+        "wallets.DigitalWallet",
         verbose_name=_("Account"),
         null=True,
         on_delete=models.PROTECT,
         related_name="account",
     )
     recepient = models.ForeignKey(
-        DigitalWallet,
+        "wallets.DigitalWallet",
         verbose_name=_("Remote account"),
         on_delete=models.PROTECT,
         related_name="remote",

@@ -16,12 +16,12 @@ class WalletOwner(models.Model):
         return f'{self.given_name} {self.family_name}'
 
     def notify_about_transaction(self, transaction):
-        message = render_to_string('emails/notification_message.txt',context={'transaction_created':transaction.created,
-                                                                              'transaction_value':transaction.value})
-        subject = render_to_string('emails/notification_subject.txt')
+        #message = render_to_string('templates/emails/notification_message.txt',context={'transaction_created':transaction.created,
+                                                                           #   'transaction_value':transaction.value})
+        #subject = render_to_string('templates/emails/notification_subject.txt')
         send_mail(
-            subject,
-            message,
+            "subject",
+            "message",
             settings.DEFAULT_SENDER,
             [self.email],
             fail_silently=False,

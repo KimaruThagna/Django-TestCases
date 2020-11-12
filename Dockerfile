@@ -22,8 +22,6 @@ RUN apt-get -y update && apt-get -y install \
 
 WORKDIR /app
 
-USER app
-
 ADD requirements.txt /app/
 
 ENV PATH /home/app/venv/bin:${PATH}
@@ -37,6 +35,6 @@ ADD . /app/
 
 ENV DJANGO_SETTINGS_MODULE app.settings
 
-EXPOSE 8000
+EXPOSE 8001
 
 ENTRYPOINT [ "/app/manage.py" ]

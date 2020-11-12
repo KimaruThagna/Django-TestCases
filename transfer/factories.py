@@ -9,4 +9,4 @@ class TransactionFactory(factory.django.DjangoModelFactory):
 
     sender = factory.SubFactory(DigitalWalletFactory)
     recepient = factory.SubFactory(DigitalWalletFactory)
-    value = faker.Faker("pyint", min_value=0, max_value=100000)
+    value = faker.Faker("pyint")
